@@ -58,6 +58,9 @@ class EmailVerifyCode(models.Model):
         verbose_name = '邮箱验证码'
         verbose_name_plural = verbose_name
 
+    def __str__(self):
+        return '{0}({1})'.format(self.code, self.email)
+
 class Banner(models.Model):
     title = models.CharField(max_length=100, verbose_name=u'标题')
     image = models.ImageField(
@@ -73,3 +76,7 @@ class Banner(models.Model):
     class Meta:
         verbose_name = u'轮波图'
         verbose_name_plural = verbose_name
+
+
+    def __str__(self):
+        return '{0}(位于第{1}位)'.format(self.title, self.index)
