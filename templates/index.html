@@ -19,11 +19,10 @@
     <header>
 		<div  class=" header">
  			<div class="top">
+                {% if request.user.is_authenticated %}
 				<div class="wp">
 					<div class="fl"><p>服务电话：<b>33333333</b></p></div>
-					<!--登录后跳转-->
-
-                        
+					<!--登录后跳转-->                        
                         <a style="color:white" class="fr registerbtn" href="/register/">注册</a>
                         <a style="color:white" class="fr loginbtn" href="/login/">登录</a>
 						
@@ -47,7 +46,15 @@
                             </div>
                         </div>
 				</div>
-			</div>
+            </div>
+            {% else %}
+            <div class="wp">
+				<div class="fl"><p>服务电话：<b>23333333</b></p></div>
+					<!--登录后跳转-->
+                    <a style="color:white" class="fr registerbtn" href="/register/">注册</a>
+                    <a style="color:white" class="fr loginbtn" href="/login/">登录</a>
+            </div>
+            {% endif %}
 
             <div class="middle">
                 <div class="wp">
@@ -68,8 +75,7 @@
                     </div>
                 </div>
             </div>
-            
-            
+                       
 			<nav>
 				<div class="nav">
 					<div class="wp">
@@ -87,9 +93,8 @@
 						</ul>
 					</div>
 				</div>
-			</nav>
-            
-			</div>
+			</nav>    
+		</div>
     </header>
 </section>
 <!--crumbs start-->
@@ -101,12 +106,11 @@
 				<div class="fl">
 					<div class="imgslide">
 						<ul class="imgs">
-                            
                             <li>
-                                    <a href="http://www.imooc.com">
-                                        <img width="1200" height="478" src="/static/media/banner/2016/11/57a801860001c34b12000460.jpg" />
-                                    </a>
-                                </li>
+                                <a href="http://www.imooc.com">
+                                    <img width="1200" height="478" src="/static/media/banner/2016/11/57a801860001c34b12000460.jpg" />
+                                </a>
+                            </li>
                             
                             <li>
                                     <a href="http://www.projectsedu.com">

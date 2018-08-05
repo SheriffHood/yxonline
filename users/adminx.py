@@ -18,6 +18,7 @@ class BaseSetting(object):
 class GlobalSettings(object):
     site_title = "Hood's site Admin"
     site_footer = "SheriffHood"
+    menu_style = "accordion"
 
     def get_site_menu(self):
         return (
