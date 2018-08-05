@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.backends import ModelBackend
 from django.views.generic.base import View
 from django.views.generic import TemplateView
+from django.db.models import Q
 
 def user_login(request):
     if request.method == "POST":
@@ -20,5 +21,13 @@ def user_login(request):
             return render(request, "index.html")
       
         else:
-            return render(request, "login.html", {})
+            return render(request, "login.html", {"msg":"wrong pwd or username"})
 
+class CustomBackend(ModelBackend):
+    def authenticate(self, username=None, password=None, **kwargs):
+        try:
+            user = UserProfile.objects.get( Q(username=username)|Q(email=username) )
+            if user.check_password(password):
+                return user
+        except Exception as e:
+            return None

@@ -27,6 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTHENTICATION_BACKENDS = (
+    'users.views.CustomBackend',
+
+)
 
 # Application definition
 
@@ -133,7 +137,3 @@ USE_TZ = False
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static'), ]
-
-#AUTHENTICATION_BACKENDS = (
-#    'users.views.CustomBackend,'
-#    )
