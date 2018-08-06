@@ -16,6 +16,7 @@ Including another URLconf
 from django.urls import path, include
 import xadmin
 from users import views
+from users.views import LoginView
 
 xadmin.autodiscover()
 
@@ -27,5 +28,5 @@ xversion.register_models()
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
-    path('login/', TemplateView.as_view(template_name='login.html'), name='login')
+    path('login/', LoginView.as_view(), name='login')
 ]
