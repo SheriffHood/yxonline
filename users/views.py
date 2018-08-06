@@ -11,8 +11,8 @@ from django.db.models import Q
 
 def user_login(request):
     if request.method == "POST":
-        user_name = request.POST.get("username", "")
-        pass_word = request.POST.get("password", "")
+        user_name = request.POST.post("username", "")
+        pass_word = request.POST.post("password", "")
 
         user = authenticate(username= user_name, password= pass_word)
 
@@ -22,6 +22,9 @@ def user_login(request):
       
         else:
             return render(request, "login.html", {"msg":"wrong pwd or username"})
+
+    elif request.method == "GET":
+        return render(request, "login.html", {})
 
 class CustomBackend(ModelBackend):
     def authenticate(self, username=None, password=None, **kwargs):

@@ -4,4 +4,8 @@
 from users.views import user_login
 from django.urls import path
 
-path('login/', user_login, name='login')
+#urlspatterns = [
+#    path('user_login/', user_login, name='user_login'),
+#]
+
+
