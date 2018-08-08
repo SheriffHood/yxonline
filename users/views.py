@@ -14,7 +14,7 @@ from users.forms import LoginForm
 class LoginView(View):
 
     def get(self, request):
-        # render就是渲染html返回用户
+        # render渲染html返回用户
         # render三变量: request 模板名称 一个字典写明传给前端的值
         return render(request, "login.html", {})
 
@@ -24,7 +24,7 @@ class LoginView(View):
         login_form = LoginForm(request.POST)
         #is_valid判断我们字段是否有错执行我们原有逻辑，验证失败跳回login页面
         if login_form.is_valid():
-            # 取不到时为空，username，password为前端页面name值
+            # 取不到时为空，username，password为前端页面值
             user_name = request.POST.get("username", "")
             pass_word = request.POST.get("password", "")
 
@@ -74,3 +74,9 @@ class CustomBackend(ModelBackend):
                 return user
         except Exception as e:
             return None
+
+class RegisterView(View):
+    def get(self, request):
+        return render(request, "register.html", {})
+
+
