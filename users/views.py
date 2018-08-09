@@ -92,6 +92,8 @@ class RegisterView(View):
             user_profile.username = user_name
             user_profile.password = pass_word
 
+            user_profile.is_active = False
+
             user_profile.password = make_password(pass_word)
             user_profile.save()
             
@@ -103,3 +105,19 @@ class RegisterView(View):
                 request, 'register.html', {
                     'register_form':register_form}
             )
+
+class ActiveUserView(View):
+    def get(self, request, active_code):
+        all_record = EmailVerifyCode.objects.filter(code=active_code)
+        active_form = ActiveForm(request.GET)
+
+        if all_record:
+            for record in all_record:
+                email = record.email
+                user = UserProfile.objects.get(email=email)
+                user.is_active = True
+                user.save()
+
+                return render(request, 'login.html', )
+        else:
+            return render(request, 'register.html', {'msg': "您的激活链接无效", "active_form":active_form})
