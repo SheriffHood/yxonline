@@ -11,7 +11,7 @@ from django.views.generic import TemplateView
 from django.db.models import Q
 
 from users.forms import LoginForm, RegisterForm
-from untils.send_email import send_register_eamil
+from utils.send_email import send_register_eamil
 
 class LoginView(View):
 
@@ -128,13 +128,12 @@ class ForgetPwdView(View):
         return render(request, "forgetpwd.html", {"forget_form":forget_form})
 
     def post(self, request):
-       forget_form = ForgetForm(request.POST)
-       if forget_form.is_valid():
-           email = request.POST.get('email', '')
-           send_register_mail(email, 'forget')
+        forget_form = ForgetForm(request.POST)
+        if forget_form.is_valid():
+            email = request.POST.get('email', '')
+            send_register_mail(email, 'forget')
 
-           return render(request, 'login.html', {'msg':'Mail sent already, attention!!'})
-
+            return render(request, 'login.html', {'msg':'Mail sent already, attention!!'})
         else:
             return render(request, 'forgetpwd.html', {'forget_form':forget_form})
 
