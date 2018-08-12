@@ -44,3 +44,15 @@ def send_register_eamil(email, send_type="register"):
         # 如果发送成功
         if send_status:
             pass
+
+    elif send_type == 'forget':
+        email_type = 'Hood site 找回密码链接'
+        email_body = loader.render_to_string(
+            'email_forget.html',
+            {
+                'active_code': code    
+            }
+        )
+        msg = EmailMessage(email_title, email_body, EMAIL_FORM, [emaili])
+        msg.content_subtype = 'html'
+        send_status = msg.send()

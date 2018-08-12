@@ -121,3 +121,37 @@ class ActiveUserView(View):
                 return render(request, 'login.html', )
         else:
             return render(request, 'register.html', {'msg': "您的激活链接无效", "active_form":active_form})
+
+class ForgetPwdView(View):
+    def get(self, request):
+        forget_form = ForgetForm()
+        return render(request, "forgetpwd.html", {"forget_form":forget_form})
+
+    def post(self, request):
+       forget_form = ForgetForm(request.POST)
+       if forget_form.is_valid():
+           email = request.POST.get('email', '')
+           send_register_mail(email, 'forget')
+
+           return render(request, 'login.html', {'msg':'Mail sent already, attention!!'})
+
+        else:
+            return render(request, 'forgetpwd.html', {'forget_form':forget_form})
+
+class ModifyPwdView(View):
+    def post(self, request):
+        modifypwd_form = ModifyPwdForm(request.POST)
+        if modifypwd_form.is_valid():
+            pwd1 = request.POST.get("password1", "")
+            pwd2 = request.POST.get("password2", "")
+            email = request.POST.get("email", "")
+
+            if pwd1 != pwd2:
+                return render(request, "password_reset.html", {"email":email, "msg":"different pwd"})
+            user = UserProfile.objects.get(email=email)
+            user.password = make_password(pwd2)
+            user.save()
+            return render(request, "login.html", {"msg":"Change PWD succesfully, please login"})
+        else:
+            email = request.POST.get("email", "")
+            return render(request, "password_reset.html", {"email":email, "modifypwd_form":modifypwd_form})

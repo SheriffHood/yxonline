@@ -16,3 +16,12 @@ class RegisterForm(forms.Form):
 
 class ActiveForm(forms.Form):
     captcha = CaptchaField(error_messages={"invalid": u"验证码错误"})
+
+class ForgetPwdForm(forms.Form):
+    def get(self, request):
+        email = forms.EmailField(required=True)
+        captcha = CaptchaField(error_message={"invalid": u"验证码错误"})
+
+class ModifyPwdForm(forms.Form):
+    password1 = forms.CharField(required=True, min_length=5)
+    password2 = forms.CharField(required=True, min_length=5)
