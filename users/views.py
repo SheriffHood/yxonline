@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #-*- coding:utf-8 -*-
 
-from users.models import UserProfile
+from users.models import UserProfile, EmailVerifyCode
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.backends import ModelBackend
@@ -10,8 +10,8 @@ from django.views.generic.base import View
 from django.views.generic import TemplateView
 from django.db.models import Q
 
-from users.forms import LoginForm, RegisterForm
-from utils.send_email import send_register_eamil
+from users.forms import LoginForm, RegisterForm, ModifyPwdForm, ForgetPwdForm, ActiveForm
+from utils.send_email import send_register_mail
 
 class LoginView(View):
 
@@ -46,9 +46,7 @@ class LoginView(View):
             else:
                 return render(request, "login.html", {"msg": "用户名或密码错误! "})
         else:
-            return render(
-                request, "login.html", {
-                    "login_form": login_form })
+            return render(request, "login.html", {"login_form": login_form })
 
 
 def user_login(request):
@@ -97,14 +95,11 @@ class RegisterView(View):
             user_profile.password = make_password(pass_word)
             user_profile.save()
             
-            send_register_eamil(user_name, 'register')
+            send_register_mail(user_name, 'register')
 
             return render(request, 'login.html')
         else:
-            return render(
-                request, 'register.html', {
-                    'register_form':register_form}
-            )
+            return render(request, 'register.html', {'register_form':register_form})
 
 class ActiveUserView(View):
     def get(self, request, active_code):
@@ -124,11 +119,11 @@ class ActiveUserView(View):
 
 class ForgetPwdView(View):
     def get(self, request):
-        forget_form = ForgetForm()
+        forget_form = ForgetPwdForm()
         return render(request, "forgetpwd.html", {"forget_form":forget_form})
 
     def post(self, request):
-        forget_form = ForgetForm(request.POST)
+        forget_form = ForgetPwdForm(request.POST)
         if forget_form.is_valid():
             email = request.POST.get('email', '')
             send_register_mail(email, 'forget')
