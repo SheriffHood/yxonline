@@ -7,5 +7,3 @@ from django.urls import path
 #urlspatterns = [
 #    path('user_login/', user_login, name='user_login'),
 #]
-
-

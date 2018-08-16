@@ -84,11 +84,13 @@ class RegisterView(View):
         register_form = RegisterForm(request.POST)
         if register_form.is_valid():
             user_name = request.POST.get('email', "")
+            if UserProfile.objects.filter(email=user_name):
+                return render(request, 'register.html', {'register_form':register_form, 'msg':'User name already exists'})
             pass_word = request.POST.get('password', "")
 
             user_profile = UserProfile()
             user_profile.username = user_name
-            user_profile.password = pass_word
+            user_profile.email = user_name
 
             user_profile.is_active = False
 
@@ -128,7 +130,7 @@ class ForgetPwdView(View):
             email = request.POST.get('email', '')
             send_register_mail(email, 'forget')
 
-            return render(request, 'login.html', {'msg':'Mail sent already, attention!!'})
+            return render(request, 'send_success.html')
         else:
             return render(request, 'forgetpwd.html', {'forget_form':forget_form})
 
@@ -138,14 +140,35 @@ class ModifyPwdView(View):
         if modifypwd_form.is_valid():
             pwd1 = request.POST.get("password1", "")
             pwd2 = request.POST.get("password2", "")
+            active_code = request.POST.get("active_code", "")
             email = request.POST.get("email", "")
-
             if pwd1 != pwd2:
-                return render(request, "password_reset.html", {"email":email, "msg":"different pwd"})
+                return render(
+                    request, "password_reset.html", {
+                        "email":email, "msg":"different pwd"})
+            
+            all_record = EmailVerifyCode.objects.filter(code=active_code)
+            if all_record:
+                for record in all_record:
+                    email = record.email
+
             user = UserProfile.objects.get(email=email)
             user.password = make_password(pwd2)
             user.save()
             return render(request, "login.html", {"msg":"Change PWD succesfully, please login"})
         else:
             email = request.POST.get("email", "")
-            return render(request, "password_reset.html", {"email":email, "modifypwd_form":modifypwd_form})
+            return render(
+                request, "password_reset.html", {
+                    "email":email, "modifypwd_form":modifypwd_form})
+
+class ResetView(View):
+    def get(self, request, active_code):
+        all_record = EmailVerifyCode.objects.filter(code=active_code)
+        active_form = ActiveForm(request.GET)
+        if all_record:
+            for record in all_record:
+                email = record.email
+                return render(request, "password_reset.html", {"active_code":active_code})
+        else:
+            return render(request, 'register.html', {'msg': "您的激活链接无效", "active_form":active_form})

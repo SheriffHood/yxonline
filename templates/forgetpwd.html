@@ -77,17 +77,17 @@
             </div>
             <div class="fl form-box">
                 <h2>忘记密码</h2>
-                <form id="jsFindPwdForm" method="post" action="{% url 'forget_pwd' %}" autocomplete="off">
-                    <div class="form-group marb20 ">
+                <form id="jsFindPwdForm" method="POST" action="{% url 'forget_pwd' %}" autocomplete="off">
+                    <div class="form-group marb20 {% if forget_form.errors.email %} errorput{% endif %}">
                         <label>帐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</label>
-                        <input type="text" id="account" name="email" value="{% ifnotequal None forget_from.email.value %}{{ forget_from.email.value }}{% endifnotequal %}" placeholder="邮箱" />
+                        <input type="text" id="account" name="email" value="{% ifnotequal None forget_form.email.value %}{{ forget_from.email.value }}{% endifnotequal %}" placeholder="邮箱" />
                     </div>
                     <div class="form-group captcha1 marb38 {% if forget_form.captcha.password.errors %} errorput{% endif %}">
                         <label>验&nbsp;证&nbsp;码</label>
                         {{ forget_form.captcha }}
                     </div>
                     <div class="error btns" id="jsForgetTips">
-                        {% for key, error in login_form.errors.items %}
+                        {% for key, error in forget_form.errors.items %}
                         {{ error }}
                         {% endfor %}
                         {{ msg }}

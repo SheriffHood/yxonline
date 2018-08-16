@@ -48,13 +48,9 @@ def send_register_mail(email, send_type="register"):
             pass
 
     elif send_type == 'forget':
-        email_title = 'Hood site 找回密码链接'
-        email_body = loader.render_to_string(
-            'email_forget.html',
-            {
-                'active_code': code    
-            }
-        )
+        email_title = "Hood site 重置密码链接"
+        email_body = "请点击下面的链接重置你的密码: http://127.0.0.1:8000/reset/{0}".format(code)
         msg = EmailMessage(email_title, email_body, EMAIL_FROM, [email])
-        msg.content_subtype = 'html'
-        send_status = msg.send()
+        send_status = send_mail(email_title, email_body, EMAIL_FROM, [email])
+        if send_status:
+            pass
