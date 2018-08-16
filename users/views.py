@@ -166,6 +166,7 @@ class ResetView(View):
     def get(self, request, active_code):
         all_record = EmailVerifyCode.objects.filter(code=active_code)
         active_form = ActiveForm(request.GET)
+        
         if all_record:
             for record in all_record:
                 email = record.email
