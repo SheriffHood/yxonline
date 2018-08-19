@@ -134,6 +134,26 @@ class ForgetPwdView(View):
         else:
             return render(request, 'forgetpwd.html', {'forget_form':forget_form})
 
+class ResetView(View):
+    def get(self, request, active_code):
+        # 查询邮箱验证记录是否存在
+        all_record = EmailVerifyCode.objects.filter(code=active_code)
+        # 如果不为空也就是有用户
+        active_form = ActiveForm(request.GET)
+        if all_record:
+            for record in all_record:
+                # 获取到对应的邮箱
+                email = record.email
+                # 将email传回来
+                # 只传回active_code
+                return render(request, "password_reset.html", {"active_code": active_code})
+        # 自己瞎输的验证码
+        else:
+            return render(
+                request, "forgetpwd.html", {
+                    "msg": "您的重置密码链接无效,请重新请求", "active_form": active_form})
+
+
 class ModifyPwdView(View):
     def post(self, request):
         modifypwd_form = ModifyPwdForm(request.POST)
@@ -142,34 +162,26 @@ class ModifyPwdView(View):
             pwd2 = request.POST.get("password2", "")
             active_code = request.POST.get("active_code", "")
             email = request.POST.get("email", "")
+            # 如果两次密码不相等，返回错误信息
             if pwd1 != pwd2:
                 return render(
                     request, "password_reset.html", {
-                        "email":email, "msg":"different pwd"})
-            
+                        "email": email, "msg": "密码不一致"})
+            # 如果密码一致
+            # 找到激活码对应的邮箱
             all_record = EmailVerifyCode.objects.filter(code=active_code)
-            if all_record:
-                for record in all_record:
-                    email = record.email
+            for record in all_record:
+                email = record.email
 
             user = UserProfile.objects.get(email=email)
+            # 加密成密文
             user.password = make_password(pwd2)
+            # save保存到数据库
             user.save()
-            return render(request, "login.html", {"msg":"Change PWD succesfully, please login"})
+            return render(request, "login.html", {"msg": "密码修改成功，请登录"})
+        # 验证失败说明密码位数不够。
         else:
             email = request.POST.get("email", "")
             return render(
                 request, "password_reset.html", {
-                    "email":email, "modifypwd_form":modifypwd_form})
-
-class ResetView(View):
-    def get(self, request, active_code):
-        all_record = EmailVerifyCode.objects.filter(code=active_code)
-        active_form = ActiveForm(request.GET)
-        
-        if all_record:
-            for record in all_record:
-                email = record.email
-                return render(request, "password_reset.html", {"active_code":active_code})
-        else:
-            return render(request, 'register.html', {'msg': "您的激活链接无效", "active_form":active_form})
+                    "email": email, "modifypwd_form": modifypwd_form})
