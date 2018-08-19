@@ -145,3 +145,6 @@ EMAIL_HOST_USER = "h77max@163.com"
 EMAIL_HOST_PASSWORD = "yx52324839"
 EMAIL_USE_TLS= True
 EMAIL_FROM = "Coder<h77max@163.com>"
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
