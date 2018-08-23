@@ -39,7 +39,6 @@ class UserProfile(AbstractUser):
         verbose_name = "用户信息"
         verbose_name_plural = verbose_name
 
-    # 重载Unicode方法，打印实例会打印username，username为继承自abstractuser
     def __str__(self):
         return self.username
 
