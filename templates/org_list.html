@@ -54,7 +54,7 @@
 					<li class="{% ifequal sort 'courses' %}active2{% endifequal %}"><a href="?sort=courses&ct={{ category }}&city={{ city_id }}">课程数 &#8595;</a></li>
 				</ul>
             </div>
-            {% for course_org in all_orgs %}
+            {% for course_org in all_orgs.object_list %}
             <dl class="des difdes">
                 <dt>
                     <a href="org-detail-homepage.html">

@@ -23,7 +23,7 @@ class OrgView(View):
         if category:
             all_orgs = all_orgs.filter(category=category)
 
-        sort = request.GET.get('sort', "")
+        sort = request.GET.get('sort', '')
         if sort:
             if sort == "students":
                 all_orgs = all_orgs.order_by("-students")
@@ -47,5 +47,5 @@ class OrgView(View):
             "city_id": city_id,
             "category": category,
             "hot_orgs": hot_orgs,
-            "sort":sort,
+            "sort": sort,
         })
