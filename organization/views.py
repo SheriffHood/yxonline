@@ -60,3 +60,16 @@ class AddUserAskView(View):
             return HttpResponse('{"status":"success"}', content_type='application/json')
         else:
             return HttpResponse('{"status":"fail", "msg":"Wrong information, please check"}', content_type='application/json')
+
+class OrgHomeView(View):
+    
+    def get(self, request, org_id):
+        course_org = CourseOrg.objects.get(id=int(org_id))
+
+        all_courses = course_org.course_set.all()[:4]
+        all_teacher = course_org.teacher_set.all()[:2]
+
+        return render(request, 'org_detail_homepage.html', {
+            'all_courses':all_courses,
+            'all_teacher':all_teacher,
+    })
