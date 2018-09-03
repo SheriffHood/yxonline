@@ -22,11 +22,6 @@ class GlobalSettings(object):
 
     def get_site_menu(self):
         return (
-            {'title': '机构管理', 'menus': (
-                {'title': '所在城市', 'url': self.get_model_url(CityDict, 'changelist')},
-                {'title': '机构信息', 'url': self.get_model_url(CourseOrg, 'changelist')},
-                {'title': '机构讲师', 'url': self.get_model_url(Teacher, 'changelist')},
-            )},
             {'title': '课程管理', 'menus': (
                 {'title': '课程信息', 'url': self.get_model_url(Course, 'changelist')},
                 {'title': '章节信息', 'url': self.get_model_url(Lesson, 'changelist')},
@@ -35,6 +30,12 @@ class GlobalSettings(object):
                 {'title': '课程评论', 'url': self.get_model_url(CourseComments, 'changelist')},
             )},
 
+            {'title': '机构管理', 'menus': (
+                {'title': '所在城市', 'url': self.get_model_url(CityDict, 'changelist')},
+                {'title': '机构信息', 'url': self.get_model_url(CourseOrg, 'changelist')},
+                {'title': '机构讲师', 'url': self.get_model_url(Teacher, 'changelist')},
+            )},
+            
             {'title': '用户管理', 'menus': (
                 {'title': '用户信息', 'url': self.get_model_url(UserProfile, 'changelist')},
                 {'title': '用户验证', 'url': self.get_model_url(EmailVerifyCode, 'changelist')},

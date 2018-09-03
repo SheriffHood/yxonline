@@ -23,6 +23,7 @@ class Course(models.Model):
     students = models.IntegerField(default=0, verbose_name=u'学习人数')
     fav_nums = models.IntegerField(default=0, verbose_name=u'收藏人数')
     image = models.ImageField(
+        default="",
         upload_to='courses/%Y/%M',
         verbose_name=u'封面图',
         max_length=100

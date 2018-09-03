@@ -72,4 +72,5 @@ class OrgHomeView(View):
         return render(request, 'org_detail_homepage.html', {
             'all_courses':all_courses,
             'all_teacher':all_teacher,
+            'course_org':course_org,
     })
