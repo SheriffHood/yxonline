@@ -48,30 +48,33 @@
                     </div>
                 </div>
             </div>
-            
-            
 			<nav>
 				<div class="nav">
 					<div class="wp">
 						<ul>
-							<li ><a href="index.html">首页</a></li>
-							<li >
-								<a href="course-list.html">
+							<li {% ifequal  '/' request.path %}
+							 class="active"
+							{% endifequal %}><a href="{% url 'index' %}">首页</a></li>
+							<li  {% ifequal  '/course' request.path|slice:":7" %}
+							 class="active"
+							{% endifequal %}>
+								<a href="{% url 'course:list' %}">
 									公开课<img class="hot" src="{% static 'images/nav_hot.png' %}">
 								</a>
 							</li>
-							<li >
-								<a href="teachers-list.html">授课教师</a>
+							<li {% ifequal  '/org/teacher' request.path|slice:":12" %}
+							 class="active"
+							{% endifequal %}>
+								<a href="{% url 'org:teacher_list' %}">授课教师</a>
 							</li>
 							<li {% ifequal  '/org/list' request.path|slice:":9" %}
 							 class="active"
-							{% endifequal %}><a href="{% url 'org:org/list/' %}">课程机构</a></li>
+							{% endifequal %}><a href="{% url 'org:list' %}">课程机构</a></li>
 						</ul>
 					</div>
 				</div>
 			</nav>
-            
-			</div>
+		</div>
     </header>
 </section>
 <!--crumbs start-->

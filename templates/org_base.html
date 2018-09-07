@@ -63,8 +63,8 @@
 	<div class="wp">
 		<ul  class="crumbs">
             <li><a href="{% url 'index' %}">首页</a>></li>
-			<li><a href="org_list.html">课程机构</a>></li>
-			<li>{% block page_title %}机构首页{% endblock %}</li>
+			<li><a href="{% url 'org:list' %}">课程机构</a>></li>
+			<li>{% block page_path %}机构首页{% endblock %}</li>
 		</ul>
 	</div>
 </section>
