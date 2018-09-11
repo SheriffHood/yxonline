@@ -91,3 +91,28 @@ class OrgCourseView(View):
             'course_org':course_org,
             'current_page':current_page,
         })
+
+class OrgDescView(View):
+    
+    def get(self, request, org_id):
+        current_page = 'desc'
+        course_org = CourseOrg.objects.get(id=int(org_id))
+
+        return render(request, 'org_detail_desc.html', {
+            'course_org':course_org,
+            'current_page':current_page,
+        })
+
+class OrgTeacherView(View):
+    
+    def get(self, request, org_id):
+        current_page = 'teacher'
+        course_org = CourseOrg.objects.get(id=int(org_id))
+
+        all_teachers = course_org.teacher_set.all()
+
+        return render(request, 'org_detail_teachers.html', {
+            'course_org':course_org,
+            'all_teachers':all_teachers,
+            'current_page':current_page,
+        })
