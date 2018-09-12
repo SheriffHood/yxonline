@@ -21,19 +21,44 @@
 <body>
 <section class="headerwrap headerwrap2">
     <header>
-		<div  class="header2 header">
- 			
-                <div class="top">
-				<div class="wp">
-					<div class="fl">
-                        <p>联系方式：<b>3333333333</b></p>
+        <div  class="header2 header">
+            <div class="top">
+            {% if request.user.is_authenticated %}
+                <div class="wp">
+                    <div class="fl"><p>服务电话：<b>23333333</b></p></div>
+                    <div class="personal">
+
+                        <dl class="user fr">
+                            <dd>{{ user.username }}<img class="down fr" src="{% static 'images/top_down.png' %}"/></dd>
+                            <dt><img width="20" height="20" src="{{ MEDIA_URL }}{{ user.image }}"/></dt>
+                        </dl>
+                        <div class="userdetail">
+                        <dl>
+                            <dt><img width="80" height="80" src="{{ MEDIA_URL }}{{ user.image }}"/></dt>
+                            <dd>
+                                <h2>{{ user.nick_name }}</h2>
+                                <p>{{ user.username }}</p>
+                            </dd>
+                        </dl>
+                        <div class="btn">
+                            <a class="personcenter fl" href="user_info.html">进入个人中心</a>
+                            <a class="fr" href="logout.html">退出</a>
+                        </div>
+                        </div>
                     </div>
-                    <a style="color:white" class="fr registerbtn" href="register.html">注册</a>
-                    <a style="color:white" class="fr loginbtn" href="login.html">登录</a>
-				</div>
-			</div>
-            
-            
+                    <a href="my_message.html">
+                        <div class="msg-num"><span id="MsgNum">{{ request.user.unread_nums }}</span></div>
+                    </a>
+                </div>
+            {% else %}
+                <div class="wp">
+                    <div class="fl"><p>服务电话：<b>23333333</b></p></div>
+                    <!--登录后跳转-->
+                    <a style="color:white" class="fr registerbtn" href="{% url "register" %}">注册</a>
+                    <a style="color:white" class="fr loginbtn" href="{% url 'login'%}?next={{ request.path }}">登录</a>
+                </div>
+            {% endif %}
+
     <div class="middle companyheader">
         <div class="wp">
             <img class="fl" style="width: 112px;height: 103px" src="{{ MEDIA_URL }}{{ course_org.image }}"/>
@@ -51,7 +76,7 @@
             </div>
             <div class="btn fr collectionbtn  notlogin 
                  "data-favid="22" data-fav-type="1">
-                 收藏
+                 {% if has_fav %}已收藏{% else %}未收藏{% endif %}
             </div>
 
         </div>
@@ -197,16 +222,16 @@ function add_fav(current_elem, fav_id, fav_type){
     $.ajax({
         cache: false,
         type: "POST",
-        url:"/org/add_fav/",
+        url:"{% url 'org:add_fav' %}",
         data:{'fav_id':fav_id, 'fav_type':fav_type},
         async: true,
         beforeSend:function(xhr, settings){
-            xhr.setRequestHeader("X-CSRFToken", "5I2SlleZJOMUX9QbwYLUIAOshdrdpRcy");
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
         },
         success: function(data) {
             if(data.status == 'fail'){
-                if(data.msg == '用户未登录'){
-                    window.location.href="login.html";
+                if(data.msg == '未登录'){
+                    window.location.href="{ url 'login' }?next={{ request.path }}";
                 }else{
                     alert(data.msg)
                 }
@@ -219,7 +244,7 @@ function add_fav(current_elem, fav_id, fav_type){
 }
 
 $('.collectionbtn').on('click', function(){
-    add_fav($(this), 1, 2);
+    add_fav($(this),{{ course_org.id }}, 2);
 });
 
 $(function(){
