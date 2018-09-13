@@ -11,6 +11,7 @@ from django.http import HttpResponse
 
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
+
 # Create your views here.
 class OrgView(View):
     def get(self, request):
