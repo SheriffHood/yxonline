@@ -30,10 +30,18 @@ class Course(models.Model):
     )
     click_nums = models.IntegerField(default=0, verbose_name=u'点击次数')
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
+    category = models.CharField(default=u'后端开发', max_length=20, verbose_name=u'课程类别')
+    tag = models.CharField(default="", max_length=10, verbose_name=u'课程标签')
 
     class Meta:
         verbose_name=u'课程'
         verbose_name_plural=verbose_name
+
+    def get_section_nums(self):
+        return self.lesson_set.all().count()
+
+    def get_learn_user(self):
+        return self.usercourse_set.all()[:5]
 
     def __str__(self):
         return self.name
