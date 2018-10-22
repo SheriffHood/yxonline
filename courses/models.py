@@ -49,6 +49,7 @@ class Course(models.Model):
 class Lesson(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name=u'课程')
     name = models.CharField(max_length=100, verbose_name=u'章节名')
+    url = models.CharField(max_length=200, default="", verbose_name=u"访问地址")
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
     class Meta:
