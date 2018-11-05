@@ -33,21 +33,21 @@
             <div style="height: 15px" class="path">
             </div>
             <div class="hd">
-                <h2 class="l">django与vuejs实战项目2</h2>
+                <h2 class="l">{{ course.name }}</h2>
             </div>
             <div class="statics clearfix">
                 <div class="static-item ">
-                    <span class="meta-value"><strong>高级</strong></span>
+                    <span class="meta-value"><strong>{{ course.get_degree_display }}</strong></span>
                     <span class="meta">难度</span>
                     <em></em>
                 </div>
                 <div class="static-item static-time">
-                    <span class="meta-value">0分钟</span>
+                    <span class="meta-value">{{ course.learn_times }}分钟</span>
                     <span class="meta">时长</span>
                     <em></em>
                 </div>
                 <div class="static-item">
-                    <span class="meta-value"><strong>12</strong></span>
+                    <span class="meta-value"><strong>{{ course.students }}</strong></span>
                     <span class="meta">学习人数</span>
                     <em></em>
                 </div>
