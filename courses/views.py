@@ -78,8 +78,8 @@ class CourseInfoView(View):
 
 class CommentsView(View):
     def get(self, request, course_id):
-        all_comments = CourseComments.objects.all()
         course = Course.objects.get(id=int(course_id))
+        all_comments = CourseComments.objects.filter(course=course)
         all_resources = CourseResource.objects.filter(course=course)
         return render(request, 'course_comment.html',{
             'course':course,
