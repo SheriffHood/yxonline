@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from courses.models import Course, CourseResource
 
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
-from operation.models import UserFavorite, CourseComments
+from operation.models import UserFavorite, CourseComments, UserCourse
 
 # Create your views here.
 class CourseListView(View):
@@ -70,16 +70,23 @@ class CourseDetailView(View):
 class CourseInfoView(View):
     def get(self, request, course_id):
         course = Course.objects.get(id=int(course_id))
+        user_courses = UserCourse.objects.filter(course=course)
+        user_ids = [user_course.user.id for user_course in user_courses]
+        all_user_courses = UserCourse.objects.filter(user_id__in=user_ids)
+
+        course_ids = [user_course.course.id for user_course in user_courses]
+        relate_courses = Course.objects.filter(id__in=course_ids).order_by("click_num")[:5]
         all_resources = CourseResource.objects.filter(course=course)
         return render(request, 'course_video.html',{
             'course':course,
             'course_resources':all_resources,
+            'relate_courses':relate_courses,
         })
 
 class CommentsView(View):
     def get(self, request, course_id):
         course = Course.objects.get(id=int(course_id))
-        all_comments = CourseComments.objects.filter(course=course)
+        all_comments = CourseComments.objects.filter(course=course).order_by("-add_time")
         all_resources = CourseResource.objects.filter(course=course)
         return render(request, 'course_comment.html',{
             'course':course,
