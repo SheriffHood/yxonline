@@ -8,6 +8,7 @@ from courses.models import Course, CourseResource
 
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 from operation.models import UserFavorite, CourseComments, UserCourse
+from utils.mixin_utils import LoginRequiredMixin
 
 # Create your views here.
 class CourseListView(View):
@@ -67,15 +68,24 @@ class CourseDetailView(View):
             'has_fav_org':has_fav_org,
         })
 
-class CourseInfoView(View):
+class CourseInfoView(LoginRequiredMixin, View):
+    login_url = '/login/'
+    redirect_field_name = 'next'
+
     def get(self, request, course_id):
         course = Course.objects.get(id=int(course_id))
+
+        user_courses = UserCourse.objects.filter(user=request.user, course=course)
+        if not user_courses:
+            user_course = UserCourse(user=request.user, course=course)
+            user_course.save()
+
         user_courses = UserCourse.objects.filter(course=course)
         user_ids = [user_course.user.id for user_course in user_courses]
         all_user_courses = UserCourse.objects.filter(user_id__in=user_ids)
 
-        course_ids = [user_course.course.id for user_course in user_courses]
-        relate_courses = Course.objects.filter(id__in=course_ids).order_by("click_num")[:5]
+        course_ids = [user_course.course.id for user_course in all_user_courses]
+        relate_courses = Course.objects.filter(id__in=course_ids).order_by("click_nums")[:5]
         all_resources = CourseResource.objects.filter(course=course)
         return render(request, 'course_video.html',{
             'course':course,
@@ -83,7 +93,10 @@ class CourseInfoView(View):
             'relate_courses':relate_courses,
         })
 
-class CommentsView(View):
+class CommentsView(LoginRequiredMixin, View):
+    login_url = '/login/'
+    redirect_field_name = 'next'
+
     def get(self, request, course_id):
         course = Course.objects.get(id=int(course_id))
         all_comments = CourseComments.objects.filter(course=course).order_by("-add_time")
