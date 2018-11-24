@@ -79,7 +79,7 @@ class Video(models.Model):
         return self.video_set.all()
 
     def __str__(self):
-        return '<{0}>课程视频 >> {1} '.format(self.course, self.name)
+        return '<{0}>课程视频 >> {1} '.format(self.lesson, self.name)
 
 class CourseResource(models.Model):
     course=models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name=u'课程') 

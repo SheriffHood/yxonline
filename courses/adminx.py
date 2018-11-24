@@ -2,7 +2,7 @@
 #-*- coding:utf-8 -*-
 
 import xadmin
-from courses.models import Course, Lesson, Video, CourseResource
+from courses.models import Course, CourseResource, Video, Lesson
 
 class CourseAdmin(object):
     list_dispay = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students']
