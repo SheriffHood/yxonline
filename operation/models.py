@@ -56,7 +56,7 @@ class UserFavorite(models.Model):
 
     # 机智版
     # 直接保存用户的id.
-    fav_id = models.IntegerField(default=0)
+    fav_id = models.IntegerField(default=0, verbose_name=u"用户ID")
     # 表明收藏的是哪种类型。
     fav_type = models.IntegerField(
         choices=TYPE_CHOICES,
