@@ -62,7 +62,10 @@ class Lesson(models.Model):
         verbose_name_plural=verbose_name
 
     def __str__(self):
-        return '<{0}>课程章节 >> {1} '.format(self.course, self.name)
+        return '<{0}>课程的章节 >> {1} '.format(self.course, self.name)
+
+    def get_lesson_video(self):
+        return self.video_set.all()
 
 class Video(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name=u'章节')
@@ -75,11 +78,8 @@ class Video(models.Model):
         verbose_name=u'视频'
         verbose_name_plural=verbose_name
 
-    def get_lesson_video(self):
-        return self.video_set.all()
-
     def __str__(self):
-        return '<{0}>课程视频 >> {1} '.format(self.lesson, self.name)
+        return '<{0}>章节的视频 >> {1} '.format(self.lesson, self.name)
 
 class CourseResource(models.Model):
     course=models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name=u'课程') 
@@ -96,4 +96,4 @@ class CourseResource(models.Model):
         verbose_name_plural=verbose_name
 
     def __str__(self):
-        return '<{0}>课程资源 >> {1} '.format(self.course, self.name)
+        return '<{0}>课程的资源 >> {1} '.format(self.course, self.name)

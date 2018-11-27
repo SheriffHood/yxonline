@@ -89,7 +89,7 @@ class CourseInfoView(LoginRequiredMixin, View):
         all_resources = CourseResource.objects.filter(course=course)
         return render(request, 'course_video.html',{
             'course':course,
-            'course_resources':all_resources,
+            'all_resources':all_resources,
             'relate_courses':relate_courses,
         })
 
