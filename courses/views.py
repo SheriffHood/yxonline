@@ -101,10 +101,24 @@ class CommentsView(LoginRequiredMixin, View):
         course = Course.objects.get(id=int(course_id))
         all_comments = CourseComments.objects.filter(course=course).order_by("-add_time")
         all_resources = CourseResource.objects.filter(course=course)
+
+        user_courses = UserCourse.objects.filter(user=request.user, course=course)
+        if not user_courses:
+            user_course = UserCourse(user=request.user, course=course)
+            user_course.save()
+
+        user_courses = UserCourse.objects.filter(course=course)
+        user_ids = [user_course.user.id for user_course in user_courses]
+        all_user_courses = UserCourse.objects.filter(user_id__in=user_ids)
+
+        course_ids = [user_course.course.id for user_course in all_user_courses]
+        relate_courses = Course.objects.filter(id__in=course_ids).order_by("click_nums")[:5]
+
         return render(request, 'course_comment.html',{
             'course':course,
             'all_resources':all_resources,
             'all_comments':all_comments,
+            'relate_courses':relate_courses,
         })
 
 class AddCommentsView(View):

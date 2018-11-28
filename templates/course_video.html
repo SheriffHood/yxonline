@@ -98,7 +98,7 @@
                         <ul class="downlist">
                             {% for course_resourse in course.courseresource_set.get_queryset %}
                             <li>
-                                <span ><i class="aui-iconfont aui-icon-file"></i>&nbsp;&nbsp;{{ course_resourse.name }}</span>
+                                
                                 <a href="{{ MEDIA_URL }}{{ course_resource.download }}" class="downcode" target="_blank" download="" data-id="274" title="">下载</a>
                             </li>
                             {% endfor %}
