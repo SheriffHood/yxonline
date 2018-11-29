@@ -78,6 +78,8 @@ class CourseInfoView(LoginRequiredMixin, View):
         user_courses = UserCourse.objects.filter(user=request.user, course=course)
         if not user_courses:
             user_course = UserCourse(user=request.user, course=course)
+            course.students += 1
+            course.save()
             user_course.save()
 
         user_courses = UserCourse.objects.filter(course=course)
@@ -99,6 +101,7 @@ class CommentsView(LoginRequiredMixin, View):
 
     def get(self, request, course_id):
         course = Course.objects.get(id=int(course_id))
+
         all_comments = CourseComments.objects.filter(course=course).order_by("-add_time")
         all_resources = CourseResource.objects.filter(course=course)
 
