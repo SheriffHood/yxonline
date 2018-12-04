@@ -29,7 +29,7 @@
                 {% for teacher in all_teachers.object_list %}
                 <dl class="des">
 					<dt>
-						<a href="/org/teacher/detail/1/">
+						<a href="{% url 'org:teacher_detail' teacher.id %}">
                             <div class="picpic">
                                 <img width="100" height="100" class="scrollLoading" src="{{ MEDIA_URL }}{{ teacher.image }}"/>
                             </div>
@@ -46,7 +46,7 @@
 						</div>
 					</dt>
 					<dd>
-						<a href="/org/teacher/detail/1/">
+						<a href="{% url 'org:teacher_detail' teacher.id %}">
                             <h1>{{ teacher.name }}<span class="key picbig">金牌讲师</span></h1>
                         </a>
 						<ul class="cont">
@@ -57,7 +57,7 @@
 							<li>教学特点：<span>{{ teacher.points }}</span></li>
 						</ul>
 					</dd>
-                    <a class="buy buyservice" href="/org/teacher/detail/1/"><br/>查看<br/>详情</a>
+                    <a class="buy buyservice" href="{% url 'org:teacher_detail' teacher.id %}"><br/>查看<br/>详情</a>
                 </dl>
                 {% endfor %}
 		</div>
@@ -89,21 +89,44 @@
         {% for hot_teacher in sorted_teacher %}   
             <dl class="des">
                 <span class="num fl">1</span>
-                <a href="/diary/hk_detail/6/">
+                <a href="{% url 'org:teacher_detail' hot_teacher.id %}">
                     <dt>
                         <img width="50" height="50" class="scrollLoading"  src="{{ MEDIA_URL }}{{ hot_teacher.image }}"/>
                     </dt>
                 </a>
                 <dd>
-                    <a href="/diary/hk_detail/6/">
+                    <a href="{% url 'org:teacher_detail' hot_teacher.id %}">
                         <h1 title="bobby">{{ hot_teacher.name }}</h1>
                     </a>
                     <p>工作年限：<span>{{ hot_teacher.work_years }}年</span></p>
                 </dd>
             </dl>
         {% endfor %}
-    </div>
-    
+    </div>    
     </div>
 </section>
+{% endblock %}
+
+{% block custom_js %}
+<script>
+
+    window._bd_share_config = {
+        "common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":["mshare","qzone","tsina","weixin","sqq"],"bdPic":"","bdStyle":"0","bdSize":"16"},
+        share : [
+            {% for teacher in all_teacher.object_list %}
+                   {
+			"tag" : "share_{{ teacher.id }}",
+			"bdSize" : 16,
+                       "bdText":"授课教师-{{ teacher.name }}-mtianyan慕课小站",
+                       "bdDesc": "我在#mtianyan慕课小站#发现了老师“{{ teacher.name }}”，对我们学习很有帮助，一起来看看吧",
+                        "bdUrl": 'http://mxonline.mtianyan.cn{% url 'org:teacher_detail' teacher.id %}',
+
+
+		},{% endfor %}
+]
+
+    }
+	//以下为js加载部分
+	with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
 {% endblock %}
