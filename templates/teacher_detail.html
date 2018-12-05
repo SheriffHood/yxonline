@@ -6,7 +6,7 @@
 <section>
     <div class="wp">
         <ul  class="crumbs">
-            <li><a href="index.html">首页</a>></li>
+            <li><a href="{% url 'index' %}">首页</a>></li>
             <li><a href="{% url 'org:teacher_list' %}">讲师列表</a>></li>
             <li>讲师详情</li>
         </ul>
@@ -40,7 +40,7 @@
                             </div>
                         </dt>
                         <dd>
-                            <a href="/diary/hk_detail/10/">
+                            <a href="{% url 'org:teacher_detail' teacher.id %}">
                                 <h1>{{ teacher.name }}<span class="key picbig">金牌讲师</span></h1>
                             </a>
                             <ul class="cont">
@@ -57,7 +57,7 @@
                 <div class="left layout">
 				<div class="head">
 					<ul class="tab_header">
-						<li class="active"><a href="/diary/hk_detail/10/">全部课程</a> </li>
+						<li class="active"><a href="{% url 'course:course_list' %}">全部课程</a> </li>
 					</ul>
 				</div>
                     <div class="companycenter">
@@ -89,7 +89,7 @@
                 <div class="right butler-company-box">
                 <div class="head">
                     <h1>{{ teacher.org.name }}</h1>
-                    <p>知名高校</p>
+                    <p>{{ teacher.org.category }}</p>
                 </div>
                 <div class="pic">
                     <a href="{% url 'org:org_home' teacher.org.id %}">
