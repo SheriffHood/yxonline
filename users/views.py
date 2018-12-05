@@ -12,6 +12,8 @@ from django.db.models import Q
 
 from users.forms import LoginForm, RegisterForm, ModifyPwdForm, ForgetPwdForm, ActiveForm
 from utils.send_email import send_register_mail
+from users.models import Banner
+from courses.models import Course, CourseOrg
 
 class LoginView(View):
 
@@ -153,7 +155,6 @@ class ResetView(View):
                 request, "forgetpwd.html", {
                     "msg": "您的重置密码链接无效,请重新请求", "active_form": active_form})
 
-
 class ModifyPwdView(View):
     def post(self, request):
         modifypwd_form = ModifyPwdForm(request.POST)
@@ -185,3 +186,20 @@ class ModifyPwdView(View):
             return render(
                 request, "password_reset.html", {
                     "email": email, "modifypwd_form": modifypwd_form})
+
+class IndexView(View):
+    def get(self, request):
+        all_banner = Banner.objects.all().order_by('index')[:5]
+
+        courses = Course.objects.filter(is_banner=False)[:6]
+
+        banner_courses = Course.objects.filter(is_banner=True)[:3]
+
+        course_orgs = CourseOrg.objects.all()[:15]
+
+        return render(request, 'index.html', {
+            'all_banner': all_banner,
+            'courses': courses,
+            'banner_courses': banner_courses,
+            'course_orgs': course_orgs,
+        })
