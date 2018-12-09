@@ -9,6 +9,7 @@ from operation.models import UserFavorite
 from courses.models import Course
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
+from django.db.models import Q
 
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
@@ -20,6 +21,12 @@ class OrgView(View):
 
         hot_orgs = all_orgs.order_by("-click_nums")[:3]
         all_citys = CityDict.objects.all()
+
+        #机构搜索
+        search_keywords = request.GET.get('keywords', '')
+        if search_keywords:
+            all_orgs = all_orgs.filter( Q(name__icontains=search_keywords) | Q(desc__icontains=search_keywords) )
+
         city_id = request.GET.get('city', '')
         if city_id:
             all_orgs = all_orgs.filter(city_id=(int(city_id)))
@@ -175,6 +182,11 @@ class TeacherListView(View):
     def get(self, request):
         all_teachers = Teacher.objects.all()
 
+        #讲师搜索
+        search_keywords = request.GET.get('keywords', '')
+        if search_keywords:
+            all_teachers = all_teachers.filter( Q(name__icontains=search_keywords) )
+        
         sort = request.GET.get('sort', '')
         if sort:
             if sort == "hot":
