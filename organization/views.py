@@ -25,7 +25,8 @@ class OrgView(View):
         #机构搜索
         search_keywords = request.GET.get('keywords', '')
         if search_keywords:
-            all_orgs = all_orgs.filter( Q(name__icontains=search_keywords) | Q(desc__icontains=search_keywords) )
+            all_orgs = all_orgs.filter( Q(name__icontains=search_keywords)|
+                                        Q(desc__icontains=search_keywords) )
 
         city_id = request.GET.get('city', '')
         if city_id:

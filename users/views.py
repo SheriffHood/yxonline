@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 #-*- coding:utf-8 -*-
 
+import json
+
 from users.models import UserProfile, EmailVerifyCode
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
@@ -9,8 +11,9 @@ from django.contrib.auth.hashers import make_password
 from django.views.generic.base import View
 from django.views.generic import TemplateView
 from django.db.models import Q
+from django.http import HttpResponse
 
-from users.forms import LoginForm, RegisterForm, ModifyPwdForm, ForgetPwdForm, ActiveForm
+from users.forms import LoginForm, RegisterForm, ModifyPwdForm, ForgetPwdForm, ActiveForm, UploadImageForm
 from utils.send_email import send_register_mail
 from users.models import Banner
 from courses.models import Course, CourseOrg
@@ -214,3 +217,41 @@ class UserinfoView(LoginRequiredMixin, View):
         return render(request, 'usercenter_info.html', {
             
         })
+
+class UploadImageView(LoginRequiredMixin, View):
+    """
+    用户修改头像
+    """
+    def post(self, request):
+        image_form = UploadImageForm(request.POST, request.FILES, instance=request.user)
+        if image_form.is_valid():
+            image_form.save()
+            return HttpResponse('{"status":"success"}', content_type='application/json')
+        else:
+            return HttpResponse('{"status":"fail"}', content_type='application/json')
+
+class UpdatePwdView(LoginRequiredMixin ,View):
+    """
+    个人中心修改用户密码
+    """
+    login_url = '/login/'
+    redirect_field_name = 'next'
+
+    def post(self, request):
+        modify_form = ModifyPwdForm(request.POST)
+        if modify_form.is_valid():
+            pwd1 = request.POST.get("password1", "")
+            pwd2 = request.POST.get("password2", "")
+            # 如果两次密码不相等，返回错误信息
+            if pwd1 != pwd2:
+                return HttpResponse('{"status":"fail", "msg":"密码不一致"}', content_type='application/json')
+            # 如果密码一致
+            user = request.user
+            # 加密成密文
+            user.password = make_password(pwd2)
+            # save保存到数据库
+            user.save()
+            return HttpResponse('{"status":"success"}', content_type='application/json')
+        # 验证失败说明密码位数不够。
+        else:
+            return HttpResponse(json.dumps(modify_form.errors), content_type='application/json')

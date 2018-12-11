@@ -22,7 +22,9 @@ class CourseListView(View):
         #课程搜索
         search_keywords  = request.GET.get('keywords', '')
         if search_keywords:
-            all_courses = all_courses.filter( Q(name__icontains=search_keywords) | Q(desc__icontains=search_keywords) | Q(detail__icontains=search_keywords) )
+            all_courses = all_courses.filter( Q(name__icontains=search_keywords)|
+                                              Q(desc__icontains=search_keywords)|
+                                              Q(detail__icontains=search_keywords) )
 
         sort = request.GET.get('sort', '')
         if sort:
