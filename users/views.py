@@ -15,6 +15,8 @@ from utils.send_email import send_register_mail
 from users.models import Banner
 from courses.models import Course, CourseOrg
 
+from utils.mixin_utils import LoginRequiredMixin
+
 class LoginView(View):
 
     def get(self, request):
@@ -202,4 +204,13 @@ class IndexView(View):
             'courses': courses,
             'banner_courses': banner_courses,
             'course_orgs': course_orgs,
+        })
+
+class UserinfoView(LoginRequiredMixin, View):
+    """
+    用户个人信息
+    """
+    def get(self, request):
+        return render(request, 'usercenter_info.html', {
+            
         })

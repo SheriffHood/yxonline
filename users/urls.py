@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 #-*- coding:utf-8 -*-
 
-from users.views import user_login
-from django.urls import path
+from django.urls import path, include, re_path
+from users.views import UserinfoView
 
-#urlspatterns = [
-#    path('user_login/', user_login, name='user_login'),
-#]
+app_name = 'users'
+
+urlpatterns = [
+    path('info/', UserinfoView.as_view(), name='user_info'),
+]
