@@ -31,7 +31,7 @@
                         <div class="fl"><p>服务电话：<b>33333333</b></p></div>
                         <div class="personal">
                             <dl class="user fr">
-                                <dd>{{ user.username }}<img class="down fr" src="{% static 'images/top_down.png' %}"/></dd>
+                                <dd>{{ user.nick_name }}<img class="down fr" src="{% static 'images/top_down.png' %}"/></dd>
                                 <dt><img width="20" height="20" src="{{ MEDIA_URL }}{{ request.user.image }}"/></dt>
                             </dl>
                             <div class="userdetail">
@@ -39,7 +39,7 @@
                                     <dt><img width="80" height="80" src="{{ MEDIA_URL }}{{ request.user.image }}"/></dt>
                                     <dd>
                                         <h2>{{ request.user.nick_name }}</h2>
-                                        <p>{{ request.user.username }}</p>
+                                        <p>{{ request.user.email }}</p>
                                     </dd>
                                 </dl>
                                 <div class="btn">
@@ -155,7 +155,7 @@
 							<input type="button" id="jsEditUserBtn" value="保存">
 						</li>
 					</ul>
-                    <input type='hidden' name='csrfmiddlewaretoken' value='799Y6iPeEDNSGvrTu3noBrO4MBLv6enY' />
+                    {% csrf_token %}
 				</form>
 			</div>
 		</div>

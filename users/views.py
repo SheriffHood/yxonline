@@ -14,6 +14,7 @@ from django.db.models import Q
 from django.http import HttpResponse
 
 from users.forms import LoginForm, RegisterForm, ModifyPwdForm, ForgetPwdForm, ActiveForm, UploadImageForm
+from users.forms import UserInfoForm
 from utils.send_email import send_register_mail
 from users.models import Banner
 from courses.models import Course, CourseOrg
@@ -218,6 +219,14 @@ class UserinfoView(LoginRequiredMixin, View):
         return render(request, 'usercenter_info.html', {
             
         })
+
+    def post(self, request):
+        user_info_form = UserInfoForm(request.POST, instance=request.user)
+        if user_info_form.is_valid():
+            user_info_form.save()
+            return HttpResponse('{"status":"success"}', content_type='application/json')
+        else:
+            return HttpResponse(json.dumps(user_info_form.errors), content_type='application/json')
 
 class UploadImageView(LoginRequiredMixin, View):
     """
