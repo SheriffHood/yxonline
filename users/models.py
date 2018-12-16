@@ -45,12 +45,13 @@ class UserProfile(AbstractUser):
 class EmailVerifyCode(models.Model):
     SEND_CHOICES=(
         ('register', u'注册'),
-        ('forget', u'找回密码')
+        ('forget', u'找回密码'),
+        ('update_email', u'修改邮箱')
     )
 
     code = models.CharField(max_length=20, verbose_name=u'验证码')
     email = models.EmailField(max_length=50, verbose_name=u'邮箱')
-    send_type = models.CharField(choices=SEND_CHOICES, max_length=10)
+    send_type = models.CharField(choices=SEND_CHOICES, max_length=30)
     send_time = models.DateTimeField(default=datetime.now)
 
     class Meta:

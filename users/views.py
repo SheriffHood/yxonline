@@ -19,6 +19,7 @@ from users.models import Banner
 from courses.models import Course, CourseOrg
 
 from utils.mixin_utils import LoginRequiredMixin
+from utils.send_email import send_register_mail
 
 class LoginView(View):
 
@@ -255,3 +256,34 @@ class UpdatePwdView(LoginRequiredMixin ,View):
         # 验证失败说明密码位数不够。
         else:
             return HttpResponse(json.dumps(modify_form.errors), content_type='application/json')
+
+class SendEmailCodeView(LoginRequiredMixin ,View):
+    """
+    发送邮箱验证码
+    """
+    def get(self, request):
+        email = request.GET.get('email', '')
+
+        if UserProfile.objects.filter(email=email):
+            return HttpResponse('{"status":"fail", "msg":"邮箱已经存在"}', content_type='application/json')
+
+        send_register_mail(email, 'update_email')
+
+        return HttpResponse('{"status":"success"}', content_type='application/json')
+
+class UpdateEmailView(LoginRequiredMixin, View):
+    """
+    修改邮箱
+    """
+    def post(self, request):
+        email = request.POST.get('email', '')
+        code = request.POST.get('code', '')
+
+        existed_records = EmailVerifyCode.objects.filter(email=email, code=code, send_type='update_email')
+        if existed_records:
+            user = request.user
+            user.email = email
+            user.save()
+            return HttpResponse('{"status": success}', content_type='application/json')
+        else:
+            return HttpResponse('{"email": "验证码出错"}', content_type='application/json')
