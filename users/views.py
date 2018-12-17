@@ -17,6 +17,7 @@ from users.forms import LoginForm, RegisterForm, ModifyPwdForm, ForgetPwdForm, A
 from users.forms import UserInfoForm
 from utils.send_email import send_register_mail
 from users.models import Banner
+from operation.models import UserCourse
 from courses.models import Course, CourseOrg
 
 from utils.mixin_utils import LoginRequiredMixin
@@ -296,3 +297,13 @@ class UpdateEmailView(LoginRequiredMixin, View):
             return HttpResponse('{"status": success}', content_type='application/json')
         else:
             return HttpResponse('{"email": "验证码出错"}', content_type='application/json')
+
+class MyCourseView(LoginRequiredMixin, View):
+    """
+    用户课程
+    """
+    def get(self, request):
+        user_courses = UserCourse.objects.filter(user=request.user)
+        return render(request, 'usercenter_mycourse.html', {
+            'user_courses': user_courses,
+        })
