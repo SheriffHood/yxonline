@@ -3,7 +3,7 @@
 
 from django.urls import path, include, re_path
 from users.views import UserinfoView, UploadImageView, UpdatePwdView, SendEmailCodeView, UpdateEmailView
-from users.views import MyCourseView
+from users.views import MyCourseView, MyFavOrgView, MyFavTeacherView, MyFavCourseView
 
 app_name = 'users'
 
@@ -25,4 +25,13 @@ urlpatterns = [
 
     #我的课程
     path('mycourse/', MyCourseView.as_view(), name='mycourse'),
+
+    #我收藏的课程机构
+    path('myfav/org/', MyFavOrgView.as_view(), name='myfav_org'),
+
+    #我收藏的教师
+    path('myfav/teacher/', MyFavTeacherView.as_view(), name='myfav_teacher'),
+
+    #我收藏的课程
+    path('myfav/course/', MyFavCourseView.as_view(), name='myfav_course'),
 ]

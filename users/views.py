@@ -17,8 +17,9 @@ from users.forms import LoginForm, RegisterForm, ModifyPwdForm, ForgetPwdForm, A
 from users.forms import UserInfoForm
 from utils.send_email import send_register_mail
 from users.models import Banner
-from operation.models import UserCourse
-from courses.models import Course, CourseOrg
+from operation.models import UserCourse, UserFavorite
+from organization.models import CourseOrg, Teacher
+from courses.models import Course
 
 from utils.mixin_utils import LoginRequiredMixin
 from utils.send_email import send_register_mail
@@ -305,5 +306,50 @@ class MyCourseView(LoginRequiredMixin, View):
     def get(self, request):
         user_courses = UserCourse.objects.filter(user=request.user)
         return render(request, 'usercenter_mycourse.html', {
-            'user_courses': user_courses,
+            'user_courses':user_courses,
+        })
+
+class MyFavOrgView(LoginRequiredMixin, View):
+    """
+    我收藏的课程
+    """
+    def get(self, request):
+        org_list = []
+        fav_orgs = UserFavorite.objects.filter(user=request.user, fav_type=2)
+        for fav_org in fav_orgs:
+            org_id = fav_org.fav_id
+            org = CourseOrg.objects.filter(id=org_id)
+            org_list.append(org)
+        return render(request, 'usercenter_fav_org.html', {
+            'org_list':org_list,
+        })
+
+class MyFavTeacherView(LoginRequiredMixin, View):
+    """
+    我收藏的教师
+    """
+    def get(self, request):
+        teacher_list = []
+        fav_teachers = UserFavorite.objects.filter(user=request.user, fav_type=3)
+        for fav_teacher in fav_teachers:
+            teacher_id = fav_teacher.fav_id
+            teacher = Teacher.objects.filter(id=teacher_id)
+            teacher_list.append(teacher)
+        return render(request, 'usercenter_fav_teacher.html',{
+            'teacher_list':teacher_list,
+        })
+
+class MyFavCourseView(LoginRequiredMixin, View):
+    """
+    我收藏的课程
+    """
+    def get(self, request):
+        course_list = []
+        fav_courses = UserFavorite.objects.filter(user=request.user, fav_type=1)
+        for fav_course in fav_courses:
+            course_id = fav_course.fav_id
+            course = Course.objects.filter(id=course_id)
+            course_list.append(course)
+        return render(request, 'usercenter_fav_course.html',{
+            'course_list':course_list,
         })
