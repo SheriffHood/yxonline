@@ -42,8 +42,8 @@
                             </div>
                         </div>
                         </div>
-                        <a href="/users/message/">
-                            <div class="msg-num"><span id="MsgNum">{{ request.user.unread_nums }}</span></div>
+                        <a href="{% url 'users:mymessage' %}">
+                            <div class="msg-num"><span id="MsgNum">{{ request.user.get_unread_nums }}</span></div>
                         </a>
                 </div>
                 {% else %}
