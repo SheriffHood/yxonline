@@ -25,7 +25,7 @@ xadmin.autodiscover()
 
 from xadmin.plugins import xversion
 from django.views.generic import TemplateView
-from users.views import IndexView
+from users.views import IndexView, LogoutView, RegisterView, ModifyPwdView, ForgetPwdView
 
 xversion.register_models()
 
@@ -37,6 +37,9 @@ urlpatterns = [
     path('', IndexView.as_view(), name = 'index'),
 
     path('login/', LoginView.as_view(), name="login"),
+
+    #退出登录
+    path('logout/', LogoutView.as_view(), name='logout'),
 
     path("register/", RegisterView.as_view(), name = "register" ),
 

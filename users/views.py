@@ -5,13 +5,14 @@ import json
 
 from users.models import UserProfile, EmailVerifyCode
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.hashers import make_password
 from django.views.generic.base import View
 from django.views.generic import TemplateView
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 
 from users.forms import LoginForm, RegisterForm, ModifyPwdForm, ForgetPwdForm, ActiveForm, UploadImageForm
 from users.forms import UserInfoForm
@@ -26,6 +27,14 @@ from utils.send_email import send_register_mail
 
 
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
+
+class LogoutView(View):
+    """
+    退出登录
+    """
+    def get(self, request):
+        logout(request)
+        return HttpResponseRedirect(reverse('index'))
 
 class LoginView(View):
 
