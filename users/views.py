@@ -379,7 +379,11 @@ class MyMessageView(LoginRequiredMixin, View):
     """
     def get(self, request):
         all_messages = UserMessage.objects.filter(user=request.user.id)
-
+        all_unread_messages = UserMessage.objects.filter(user=request.user.id, has_read=False)
+        for unread_message in all_unread_messages:
+            unread_message.has_read = True
+            unread_message.save()
+        
         try:
             page = request.GET.get('page', 1)
         except PageNotAnInteger:

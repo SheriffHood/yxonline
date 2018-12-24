@@ -47,7 +47,7 @@ class UserProfile(AbstractUser):
         获取未读消息数量
         """
         from operation.models import UserMessage
-        return UserMessage.objects.filter(user=self.id).count()
+        return UserMessage.objects.filter(user=self.id, has_read=False).count()
 
 class EmailVerifyCode(models.Model):
     SEND_CHOICES=(
