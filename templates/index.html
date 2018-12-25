@@ -16,7 +16,7 @@
         <div class="fl">
             <div class="imgslide">
                 <ul class="imgs">
-                    {% for banner in all_banner %}  
+                    {% for banner in all_banners %}  
                     <li>
                         <a href="{{ banner.url }}">
                             <img width="1200" height="478" src="{{ MEDIA_URL }}{{ banner.image }}" />
@@ -92,14 +92,14 @@
                             </a>
                             <div class="des">
                                 <a href="{% url 'course:course_detail' course.id %}">
-                                    <h2 title="django入门">{{ course.name }}</h2>
+                                    <h2 title="{{ course.name }}">{{ course.name }}</h2>
                                 </a>
                                 <span class="fl">难度：<i class="key">{{ course.get_degree_display }}</i></span>
                                 <span class="fr">学习人数：{{ course.students }}</span>
                             </div>
                             <div class="bottom">
                                 <span class="fl" title="{{ course.course_org.name }}">{{ course.course_org.name }}</span>
-                                <span class="star fr">{{ course.course_org.fav_nums }}</span>
+                                <span class="star fr">{{ course.fav_nums }}</span>
                             </div>
                         </div>
                         {% endfor %}
@@ -120,7 +120,7 @@
                 </div>
                 <div class="right">
                     <ul>
-                        {% for org in course_org %}
+                        {% for org in course_orgs %}
                         <li class="{% if forloop.counter|divisibleby:'5' %}five{% endif %}">
                             <a href="{% url 'org:org_home' org.id %}">
                                 <div class="company">

@@ -63,7 +63,7 @@ class LoginView(View):
                 # request是要render回去的。这些信息也就随着返回浏览器。完成登录
                 login(request, user)
                 # 跳转到首页 user request会被带回到首页
-                return render(request, "index.html")
+                return HttpResponseRedirect(reverse('index'))
                 # 验证不成功跳回登录页面
                 # 没有成功说明里面的值是None，并再次跳转回主页面
             else:
@@ -216,16 +216,16 @@ class ModifyPwdView(View):
 
 class IndexView(View):
     def get(self, request):
-        all_banner = Banner.objects.all().order_by('index')[:5]
+        all_banners = Banner.objects.all().order_by('index')[:5]
 
         courses = Course.objects.filter(is_banner=False)[:6]
 
-        banner_courses = Course.objects.filter(is_banner=True)[:3]
+        banner_courses = Course.objects.filter(is_banner=False)[:3]
 
         course_orgs = CourseOrg.objects.all()[:15]
 
         return render(request, 'index.html', {
-            'all_banner': all_banner,
+            'all_banners': all_banners,
             'courses': courses,
             'banner_courses': banner_courses,
             'course_orgs': course_orgs,
