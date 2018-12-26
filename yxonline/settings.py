@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '95^3dd2bux7+7b%9l2nik#7sfpa7f8a*3!2xbma#fv@0!8wv-k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 AUTHENTICATION_BACKENDS = (
     'users.views.CustomBackend',
@@ -151,6 +151,7 @@ EMAIL_FROM = "Coder<h77max@163.com>"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 PAGINATION_SETTINGS = {
     'PAGE_RANGE_DISPLAYED': 10,
