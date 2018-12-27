@@ -13,6 +13,7 @@ from django.views.generic import TemplateView
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.shortcuts import render_to_response
 
 from users.forms import LoginForm, RegisterForm, ModifyPwdForm, ForgetPwdForm, ActiveForm, UploadImageForm
 from users.forms import UserInfoForm
@@ -399,7 +400,6 @@ def page_not_found(request):
     """
     全局404
     """
-    from django.shortcuts import render_to_response
     response = render_to_response('404.html', {})
     response.status_code = 404
     return response
@@ -408,7 +408,6 @@ def page_error(request):
     """
     全局500页面配置
     """
-    from django.shortcuts import render_to_response
     response = render_to_response('500.html', {})
     response.status_code = 500
     return response
