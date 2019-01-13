@@ -17,7 +17,7 @@ from django.urls import path, include, re_path
 import xadmin
 from users import views
 from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetView, ModifyPwdView
-from yxonline.settings import MEDIA_ROOT, STATICFILES_DIRS
+from yxonline.settings import MEDIA_ROOT
 from organization.views import OrgView
 from django.views.static import serve
 
@@ -57,7 +57,7 @@ urlpatterns = [
 
     re_path('media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT }),
 
-    re_path('static/(?P<path>.*)', serve, {"document_root": STATICFILES_DIRS }),
+    #re_path('static/(?P<path>.*)', serve, {"document_root": STATICFILES_DIRS }),
 
     path('course/', include('courses.urls', namespace='course')),
 

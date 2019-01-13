@@ -9,6 +9,7 @@ from users.models import EmailVerifyCode, Banner, UserProfile
 from courses.models import Course, CourseResource, Video, Lesson
 
 from xadmin import views
+from xadmin.plugins.auth import UserAdmin
 from xadmin.models import Log
 
 class BaseSetting(object):
